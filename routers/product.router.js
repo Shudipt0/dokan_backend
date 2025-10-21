@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllProducts, addProduct, getSingleProductById, searchProducts, getCategoryList, getProductsByCategory, getAllCategories, deleteProduct, updateProduct } = require('../controllers/product.controller');
+const { getAllProducts, addProduct, getSingleProductById, searchProducts, getCategoryList, getProductsByCategory, getAllCategories, deleteProduct, updateProduct, postReviews } = require('../controllers/product.controller');
 
 
 const router = express.Router();
@@ -24,6 +24,9 @@ router.get('/category/:slug', getProductsByCategory)
 
 // get single product by id
 router.get('/:id', getSingleProductById);
+
+// post reviews
+router.post('/:id/reviews', postReviews);
 
 // update single product by id
 router.put('/:id', updateProduct);
