@@ -7,8 +7,8 @@ const productRouter = require('./routers/product.router');
 
 
 // express app initialization
-const app = express();
 dotenv.config();
+const app = express();
 app.use(express.json());
 const port = process.env.PORT;
 

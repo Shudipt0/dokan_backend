@@ -71,7 +71,7 @@ const productSchema = mongoose.Schema(
     returnPolicy: { type: String },
     minimumOrderQuantity: { type: Number },
     meta: { type: metaSchema },
-    thumbNail: { type: String },
+    thumbnail: { type: String },
     images: [{ type: String }],
   },
   { timestamps: true } // add createdAt and updatedAt automatically

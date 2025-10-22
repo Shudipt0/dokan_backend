@@ -1,3 +1,9 @@
+// external inports
+const fs = require("fs");
+const util = require("util");
+const unlinkFile = util.promisify(fs.unlink);
+
+// internal imports
 const uploadToCloudinary = require("../../helpers/upload_cloudinary");
 const uploader = require("../../utilities/product.singleUploader");
 
@@ -23,13 +29,24 @@ function imageUpload(req, res, next) {
             if(thumbnail){
               const result = await uploadToCloudinary(thumbnail.path);
               req.body.thumbnail = result.secure_url;
+
+              // Delete the local file after upload
+              if(result){
+                await unlinkFile(thumbnail.path);
+              }
             }
 
             if(images.length){
               const uploadPromises = images.map((img) => uploadToCloudinary(img.path));
               const results = await Promise.all(uploadPromises);
               req.body.images = results.map((res) => res.secure_url);
+
+              if(results){
+                const deletePromises = images.map((img) => unlinkFile(img.path));
+                await Promise.all(deletePromises);
+              }
             }
+            next();
 
            } catch (err) {
             res.status(500).json({ error: err.message });
