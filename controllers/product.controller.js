@@ -1,4 +1,5 @@
 const Product = require("../models/product.model");
+const cloudinary = require("../utilities/cloudinary");
 
 // add products
 async function addProduct(req, res, next) {
@@ -144,6 +145,23 @@ async function updateProduct(req, res, next) {
 async function deleteProduct(req, res, next) {
   const { id } = req.params;
   try {
+    // find the product first
+    const product = await Product.findById(id);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // delete images from cloudinary
+    if(product.thumbnail && product.thumbnail.public_id){
+      await cloudinary.uploader.destroy(product.thumbnail.public_id);
+    }
+
+    if(product.images && product.images.length > 0){
+      const deletePromises = product.images.map((img) => cloudinary.uploader.destroy(img.public_id));
+      await Promise.all(deletePromises);
+    }
+
+    // delete product from database
     await Product.findByIdAndDelete(id);
     res.status(200).json({
       message: "Product deleted successfully",

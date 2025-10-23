@@ -1,12 +1,17 @@
 const express = require('express');
 const { getAllProducts, addProduct, getSingleProductById, searchProducts, getCategoryList, getProductsByCategory, getAllCategories, deleteProduct, updateProduct, postReviews } = require('../controllers/product.controller');
 const imageUpload = require('../middlewares/products/product.imageUpload');
+const validateProduct = require('../middlewares/products/product.validate');
+const uploader = require('../utilities/product.singleUploader');
+// const uploader = require("../../utilities/product.singleUploader");
+// const validateComment = require('../middlewares/products/product.comment.validate');
+
 
 
 const router = express.Router();
 
 // add product
-router.post('/', imageUpload, addProduct);
+router.post('/', imageUpload, validateProduct, addProduct);
 
 // get all products
 router.get('/', getAllProducts);
@@ -27,7 +32,7 @@ router.get('/category/:slug', getProductsByCategory);
 router.get('/:id', getSingleProductById);
 
 // post reviews
-router.post('/:id/reviews', postReviews);
+router.post('/:id/reviews', uploader().none(), postReviews);
 
 // update single product by id
 router.put('/:id', imageUpload, updateProduct);

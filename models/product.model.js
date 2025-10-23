@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const reviewSchema = mongoose.Schema({
   rating: Number,
   comment: String,
-  date: Date,
+  date: { type: Date, default: Date.now },
   reviewerName: String,
   reviewerEmail: String,
 });
@@ -71,8 +71,8 @@ const productSchema = mongoose.Schema(
     returnPolicy: { type: String },
     minimumOrderQuantity: { type: Number },
     meta: { type: metaSchema },
-    thumbnail: { type: String },
-    images: [{ type: String }],
+    thumbnail: { url: { type: String }, public_id: { type: String } },
+    images: [{ url: { type: String }, public_id: { type: String } }],
   },
   { timestamps: true } // add createdAt and updatedAt automatically
 );
