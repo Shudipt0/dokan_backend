@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
 const productRouter = require('./routers/product.router');
+const usersRouter = require('./routers/users.router');
 
 
 
@@ -17,7 +18,10 @@ const port = process.env.PORT;
 mongoose.connect(process.env.DATABASE_URL)
     .then(() => console.log('Connected to MongoDB'));
 
+// routes
 app.use('/api/v1/products', productRouter);
+app.use('/api/v1/users', usersRouter);
+
 
 // default error handler
 const errorHandler = (err, req, res, next) => {

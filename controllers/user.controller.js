@@ -1,0 +1,106 @@
+const User = require("../models/user.model");
+const generateToken = require("../services/token.service");
+const moment = require("moment");
+
+// register user
+async function createUser(req, res, next) {
+  const userBody = req.body;
+
+  try {
+    // check email is taken
+    if (await User.isEmailTaken(userBody.email)) {
+      return res.status(400).json({ message: "Email already taken!" });
+    }
+    // create user
+    const user = await User.create({
+      name: userBody.name,
+      email: userBody.email,
+      password: userBody.password,
+    });
+    // send response
+    res.status(200).send({
+      message: "User registered successfully!",
+      data: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+}
+
+// login user
+async function loginUser(req, res, next) {
+  const { email, password } = req.body;
+
+  try {
+    // if email exists
+    const user = await User.findOne({ email });
+
+    // check credentials
+    if (!user || !(await user.isPasswordMatch(password))) {
+      return res.status(401).send({ message: "Incorrect email or password!" });
+    }
+
+    // generate token
+    const accessTokenExpires = moment().add(
+      process.env.JWT_ACCESS_EXPIRATION_MINUTES,
+      "minutes"
+    );
+
+    const accessToken = await generateToken(
+      user._id,
+      user.role,
+      accessTokenExpires,
+      "access"
+    );
+
+    // send response
+    res.status(200).send({
+      message: "Login successfully!",
+      data: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        access: {
+          token: accessToken,
+          expires: accessTokenExpires.toDate(),
+          expiresIn: process.env.JWT_ACCESS_EXPIRATION_MINUTES * 60,
+        },
+      },
+    });
+  } catch (error) {
+    res.status(500).send({ message: error?.message });
+  }
+}
+
+// get user profile
+async function userProfile(req, res, next) {
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id);
+    res.status(200).send({
+      user: user,
+    });
+  } catch (error) {
+    res.status(500).send({ message: error?.message });
+  }
+}
+
+// get all users
+async function getAllUsers(req, res, next) {
+  try {
+    const users = await User.find({});
+    res.status(200).send({
+      status: true,
+      users: users,
+    });
+  } catch (error) {
+    res.status(500).send({ message: error?.message });
+  }
+}
+
+module.exports = { createUser, loginUser, userProfile, getAllUsers };
