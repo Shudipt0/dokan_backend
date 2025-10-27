@@ -3,8 +3,8 @@ const { getAllProducts, addProduct, getSingleProductById, searchProducts, getCat
 const imageUpload = require('../middlewares/products/product.imageUpload');
 const validateProduct = require('../middlewares/products/product.validate');
 const uploader = require('../utilities/product.singleUploader');
-// const uploader = require("../../utilities/product.singleUploader");
-// const validateComment = require('../middlewares/products/product.comment.validate');
+const { checkAuthentication, checkAuthorization } = require('../middlewares/user/check.auth');
+const { getOrders, createOrders } = require('../controllers/order.controller');
 
 
 
@@ -12,6 +12,9 @@ const router = express.Router();
 
 // add product
 router.post('/', imageUpload, validateProduct, addProduct);
+
+// add order
+router.post('/', createOrders);
 
 // get all products
 router.get('/', getAllProducts);
@@ -24,6 +27,9 @@ router.get('/categories', getAllCategories);
 
 // get category-list
 router.get('/category-list', getCategoryList);
+
+// all orders route
+router.get("/orders", checkAuthentication, checkAuthorization, getOrders);
 
 // get products by category
 router.get('/category/:slug', getProductsByCategory);

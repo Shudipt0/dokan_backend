@@ -65,7 +65,13 @@ const productSchema = mongoose.Schema(
     },
     availableStatus: {
       type: String,
-      enum: ["In Stock", "Low Stock", "Out of Stock"],
+      enum: ["in stock", "low stock", "out of stock"],
+      default: "in stock",
+    },
+      productAge: {
+      type: String,
+      enum: ["new", "old"],
+      default: "new",
     },
     reviews: [reviewSchema],
     returnPolicy: { type: String },

@@ -77,19 +77,6 @@ async function loginUser(req, res, next) {
   }
 }
 
-// get user profile
-async function userProfile(req, res, next) {
-  const { id } = req.params;
-  try {
-    const user = await User.findById(id);
-    res.status(200).send({
-      user: user,
-    });
-  } catch (error) {
-    res.status(500).send({ message: error?.message });
-  }
-}
-
 // get all users
 async function getAllUsers(req, res, next) {
   try {
@@ -103,4 +90,32 @@ async function getAllUsers(req, res, next) {
   }
 }
 
-module.exports = { createUser, loginUser, userProfile, getAllUsers };
+// get user profile
+async function userProfile(req, res, next) {
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id);
+    res.status(200).send({
+      user: user,
+      // user: req.user,
+    });
+
+  } catch (error) {
+    res.status(500).send({ message: error?.message });
+  }
+}
+
+// update user
+async function updateUser(req, res, next) {
+  const {id} = req.params;
+  const updates = req.body;
+  try{
+    await User.findByIdAndUpdate(id, { $set: updates }, { new: true });
+    res.status(200).json({ message: "User updated successfully!" });
+  }catch (err){
+    res.status(500).json({ message: err.message });
+  }
+
+}
+
+module.exports = { createUser, loginUser, userProfile, getAllUsers, updateUser };

@@ -1,11 +1,12 @@
 const express = require("express");
-const { createUser, loginUser, userProfile, getAllUsers } = require("../controllers/user.controller");
+const { createUser, loginUser, userProfile, getAllUsers, updateUser } = require("../controllers/user.controller");
 const { checkAuthentication, checkAuthorization } = require("../middlewares/user/check.auth");
+const validateUser = require("../middlewares/user/user.validate");
 
 const router = express.Router();
 
 // register route
-router.post("/register", createUser);
+router.post("/register", validateUser, createUser);
 
 // login route
 router.post("/login", loginUser);
@@ -15,5 +16,10 @@ router.get("/", checkAuthentication, checkAuthorization, getAllUsers);
 
 // profile route
 router.get("/profile/:id", checkAuthentication,  userProfile);
+
+// update user
+router.put("/:id", checkAuthentication, updateUser)
+
+
 
 module.exports = router;
