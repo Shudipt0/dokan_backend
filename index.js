@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 
 const productRouter = require('./routers/product.router');
 const usersRouter = require('./routers/users.router');
+const orderRouter = require('./routers/order.router');
 
 
 
@@ -21,6 +22,7 @@ mongoose.connect(process.env.DATABASE_URL)
 // routes
 app.use('/api/v1/products', productRouter);
 app.use('/api/v1/users', usersRouter);
+app.use('/api/v1/orders', orderRouter);
 
 
 // default error handler

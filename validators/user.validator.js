@@ -7,7 +7,7 @@ const userSchema = Joi.object({
     "string.min": "Name must be at least 1 character long.",
     "string.max": "Name cannot be longer than 10 characters.",
   }),
-  email: Joi.string().email().required().trim().messages({"string.empty": "email is required!"}),
+  email: Joi.string().email().required().trim().messages({"string.empty": "Email is required!"}),
   password: Joi.string()
     .required()
     .trim()
