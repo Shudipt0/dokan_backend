@@ -7,17 +7,17 @@ const userSchema = Joi.object({
     "string.min": "Name must be at least 1 character long.",
     "string.max": "Name cannot be longer than 10 characters.",
   }),
-  email: Joi.string().email().required().trim().messages({"string.empty": "Email is required!"}),
-  password: Joi.string()
-    .required()
-    .trim()
-    .min(4)
-    .max(16)
-    .messages({
-      "string.empty": "password is required!",
-      "string.min": "password must be at least 4 character long.",
-      "string.max": "password cannot be longer than 16 characters.",
-    }),
+  email: Joi.string().email().trim(),
+  phone: Joi.string().required().trim().min(10).max(12).messages({
+    "string.empty": "Phone is required!",
+    "string.min": "Phone must be at least 10 character long.",
+    "string.max": "Phone cannot be longer than 12 characters.",
+  }),
+  password: Joi.string().required().trim().min(4).max(16).messages({
+    "string.empty": "password is required!",
+    "string.min": "password must be at least 4 character long.",
+    "string.max": "password cannot be longer than 16 characters.",
+  }),
   role: Joi.string().valid("user", "admin").default("user"),
 });
 

@@ -5,16 +5,19 @@ const moment = require("moment");
 // register user
 async function createUser(req, res, next) {
   const userBody = req.body;
+  const email = userBody.email;
+  const phone = userBody.phone;
 
   try {
     // check email is taken
-    if (await User.isEmailTaken(userBody.email)) {
-      return res.status(400).json({ message: "Email already taken!" });
+    if (await User.isEmailOrPhoneTaken({email, phone})) {
+      return res.status(400).json({ message: "Email or Phone already taken!" });
     }
     // create user
     const user = await User.create({
       name: userBody.name,
-      email: userBody.email,
+      phone: phone,
+      email: email,
       password: userBody.password,
     });
     // send response
@@ -23,6 +26,7 @@ async function createUser(req, res, next) {
       data: {
         id: user._id,
         name: user.name,
+        phone: phone,
         email: user.email,
       },
     });
@@ -33,11 +37,16 @@ async function createUser(req, res, next) {
 
 // login user
 async function loginUser(req, res, next) {
-  const { email, password } = req.body;
+  const userBody = req.body;
+  const password = userBody.password;
+  const email = userBody.username;
+  const phone = userBody.username;
 
   try {
     // if email exists
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ 
+      $or: [{email},{phone}]
+     });
 
     // check credentials
     if (!user || !(await user.isPasswordMatch(password))) {
