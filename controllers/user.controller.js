@@ -59,12 +59,18 @@ async function loginUser(req, res, next) {
       "minutes"
     );
 
-    const accessToken = await generateToken(
+    const token = await generateToken(
       user._id,
       user.role,
       accessTokenExpires,
       "access"
     );
+
+    // set cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: "strict",
+    })
 
     // send response
     res.status(200).send({
@@ -74,11 +80,6 @@ async function loginUser(req, res, next) {
         name: user.name,
         email: user.email,
         role: user.role,
-        access: {
-          token: accessToken,
-          expires: accessTokenExpires.toDate(),
-          expiresIn: process.env.JWT_ACCESS_EXPIRATION_MINUTES * 60,
-        },
       },
     });
   } catch (error) {
