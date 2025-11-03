@@ -1,6 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+
 
 const productRouter = require('./routers/product.router');
 const usersRouter = require('./routers/users.router');
@@ -13,6 +16,14 @@ const contactRouter = require('./routers/contact.router');
 dotenv.config();
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
+// cors
+app.use(
+    cors({
+        origin: "http://localhost:3000",
+        credentials: true,
+    })
+)
 const port = process.env.PORT;
 
 
