@@ -70,14 +70,14 @@ async function loginUser(req, res, next) {
     res.cookie("token", token, {
       httpOnly: true,
       sameSite: "none",
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
     })
 
         // optional: separate cookie for user id
     res.cookie("userId", user._id.toString(), {
       httpOnly: false, // set to true if you only need it server-side
       sameSite: "none",
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
     })
 
     // send response
