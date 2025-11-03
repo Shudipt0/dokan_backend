@@ -10,7 +10,7 @@ async function createUser(req, res, next) {
 
   try {
     // check email is taken
-    if (await User.isEmailOrPhoneTaken({email, phone})) {
+    if (await User.isEmailOrPhoneTaken({ email, phone })) {
       return res.status(400).json({ message: "Email or Phone already taken!" });
     }
     // create user
@@ -44,9 +44,9 @@ async function loginUser(req, res, next) {
 
   try {
     // if email exists
-    const user = await User.findOne({ 
-      $or: [{email},{phone}]
-     });
+    const user = await User.findOne({
+      $or: [{ email }, { phone }],
+    });
 
     // check credentials
     if (!user || !(await user.isPasswordMatch(password))) {
@@ -66,19 +66,30 @@ async function loginUser(req, res, next) {
       "access"
     );
 
-    // set cookie
+    // // set cookie
+    // res.cookie("token", token, {
+    //   httpOnly: true,
+    //   sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    //   secure: process.env.NODE_ENV === "production",
+    // })
+
+    //     // optional: separate cookie for user id
+    // res.cookie("userId", user._id.toString(), {
+    //   httpOnly: false, // set to true if you only need it server-side
+    //   sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    //   secure: process.env.NODE_ENV === "production",
+    // })
+
+    res.cookie("userId", user._id.toString(), {
+      httpOnly: false, // JS can access it
+      sameSite: "lax", // allow localhost
+      secure: false, // HTTP
+    });
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      secure: process.env.NODE_ENV === "production",
-    })
-
-        // optional: separate cookie for user id
-    res.cookie("userId", user._id.toString(), {
-      httpOnly: false, // set to true if you only need it server-side
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      secure: process.env.NODE_ENV === "production",
-    })
+      sameSite: "lax",
+      secure: false,
+    });
 
     // send response
     res.status(200).send({
@@ -117,7 +128,6 @@ async function userProfile(req, res, next) {
       user: user,
       // user: req.user,
     });
-
   } catch (error) {
     res.status(500).send({ message: error?.message });
   }
@@ -125,15 +135,20 @@ async function userProfile(req, res, next) {
 
 // update user
 async function updateUser(req, res, next) {
-  const {id} = req.params;
+  const { id } = req.params;
   const updates = req.body;
-  try{
+  try {
     await User.findByIdAndUpdate(id, { $set: updates }, { new: true });
     res.status(200).json({ message: "User updated successfully!" });
-  }catch (err){
+  } catch (err) {
     res.status(500).json({ message: err.message });
   }
-
 }
 
-module.exports = { createUser, loginUser, userProfile, getAllUsers, updateUser };
+module.exports = {
+  createUser,
+  loginUser,
+  userProfile,
+  getAllUsers,
+  updateUser,
+};
