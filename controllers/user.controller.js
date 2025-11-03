@@ -69,7 +69,13 @@ async function loginUser(req, res, next) {
     // set cookie
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "strict",
+      sameSite: "none",
+    })
+
+        // optional: separate cookie for user id
+    res.cookie("userId", user._id.toString(), {
+      httpOnly: false, // set to true if you only need it server-side
+      sameSite: "none",
     })
 
     // send response
