@@ -4,7 +4,7 @@ function checkAuthentication(req, res, next) {
   // get token from header
   const token = req.headers.authorization?.split(" ")[1] || req.cookies.token;
 
-  if (!authHeader) {
+  if (!token) {
     return res.status(401).send({ message: "Unauthorized!" });
   }
 
