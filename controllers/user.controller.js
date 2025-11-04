@@ -80,15 +80,15 @@ async function loginUser(req, res, next) {
     //   secure: process.env.NODE_ENV === "production",
     // })
 
-    res.cookie("userId", user._id.toString(), {
-      httpOnly: false, // JS can access it
-      sameSite: "lax", // allow localhost
-      secure: false, // HTTP
-    });
+    // res.cookie("userId", user._id.toString(), {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === "production",
+    //   sameSite: "strict",
+    // });
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "lax",
-      secure: false,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
     });
 
     // send response
