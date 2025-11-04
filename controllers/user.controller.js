@@ -85,11 +85,11 @@ async function loginUser(req, res, next) {
     //   secure: process.env.NODE_ENV === "production",
     //   sameSite: "strict",
     // });
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-    });
+    // res.cookie("token", token, {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === "production",
+    //   sameSite: "strict",
+    // });
 
     // send response
     res.status(200).send({
@@ -100,6 +100,7 @@ async function loginUser(req, res, next) {
         email: user.email,
         role: user.role,
       },
+      accessToken: token,
     });
   } catch (error) {
     res.status(500).send({ message: error?.message });
