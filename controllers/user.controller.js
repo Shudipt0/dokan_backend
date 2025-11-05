@@ -55,8 +55,8 @@ async function loginUser(req, res, next) {
 
     // generate token
     const accessTokenExpires = moment().add(
-      process.env.JWT_ACCESS_EXPIRATION_DAYS,
-      "days"
+      process.env.JWT_ACCESS_EXPIRATION_MINUTES,
+      'minutes'
     );
 
     const token = await generateToken(
