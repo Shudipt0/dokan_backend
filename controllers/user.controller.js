@@ -55,8 +55,8 @@ async function loginUser(req, res, next) {
 
     // generate token
     const accessTokenExpires = moment().add(
-      process.env.JWT_ACCESS_EXPIRATION_MINUTES,
-      "minutes"
+      process.env.JWT_ACCESS_EXPIRATION_DAYS,
+      "days"
     );
 
     const token = await generateToken(
@@ -66,30 +66,6 @@ async function loginUser(req, res, next) {
       "access"
     );
 
-    // // set cookie
-    // res.cookie("token", token, {
-    //   httpOnly: true,
-    //   sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    //   secure: process.env.NODE_ENV === "production",
-    // })
-
-    //     // optional: separate cookie for user id
-    // res.cookie("userId", user._id.toString(), {
-    //   httpOnly: false, // set to true if you only need it server-side
-    //   sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    //   secure: process.env.NODE_ENV === "production",
-    // })
-
-    // res.cookie("userId", user._id.toString(), {
-    //   httpOnly: true,
-    //   secure: process.env.NODE_ENV === "production",
-    //   sameSite: "strict",
-    // });
-    // res.cookie("token", token, {
-    //   httpOnly: true,
-    //   secure: process.env.NODE_ENV === "production",
-    //   sameSite: "strict",
-    // });
 
     // send response
     res.status(200).send({
