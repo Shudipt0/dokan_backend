@@ -12,6 +12,8 @@ function checkAuthentication(req, res, next) {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
+    console.log("Current server time:", Math.floor(Date.now()/1000));
+console.log("Token exp:", decoded?.exp);
     next();
   } catch (error) {
     res.status(500).send({ message: error?.message });
