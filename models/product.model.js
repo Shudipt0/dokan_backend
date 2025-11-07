@@ -9,13 +9,6 @@ const reviewSchema = mongoose.Schema({
   reviewerEmail: String,
 });
 
-// dimension schema
-const dimensionSchema = mongoose.Schema({
-  width: Number,
-  height: Number,
-  depth: Number,
-});
-
 // meta schema
 const metaSchema = mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
@@ -54,9 +47,6 @@ const productSchema = mongoose.Schema(
       type: String,
     },
     weight: { type: String },
-    dimensions: {
-      type: dimensionSchema,
-    },
     warrantyInformation: {
       type: String,
     },
@@ -76,7 +66,7 @@ const productSchema = mongoose.Schema(
     reviews: [reviewSchema],
     returnPolicy: { type: String },
     minimumOrderQuantity: { type: Number },
-    meta: { type: metaSchema },
+    meta: metaSchema ,
     thumbnail: { url: { type: String }, public_id: { type: String } },
     images: [{ url: { type: String }, public_id: { type: String } }],
   },

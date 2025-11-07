@@ -9,13 +9,6 @@ const reviewSchema = Joi.object({
   reviewerEmail: Joi.string().email(),
 });
 
-// dimension schema
-const dimensionSchema = Joi.object({
-  width: Joi.number(),
-  height: Joi.number(),
-  depth: Joi.number(),
-});
-
 // meta schema
 const metaSchema = Joi.object({
   createdAt: Joi.date(),
@@ -41,7 +34,6 @@ const productSchema = Joi.object(
     tags: Joi.array().items(Joi.string()),
     brand: Joi.string(),
     weight: Joi.string(),
-    dimensions: dimensionSchema,
     warrantyInformation: Joi.string(),
     shippingInformation: Joi.string(),
     availableStatus: Joi.string().valid('in stock', 'low Stock', 'out of stock').default('in stock'),
