@@ -66,7 +66,7 @@ const productSchema = mongoose.Schema(
     reviews: [reviewSchema],
     returnPolicy: { type: String },
     minimumOrderQuantity: { type: Number },
-    meta: metaSchema ,
+    meta: metaSchema,
     thumbnail: { url: { type: String }, public_id: { type: String } },
     images: [{ url: { type: String }, public_id: { type: String } }],
   },

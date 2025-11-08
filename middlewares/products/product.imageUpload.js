@@ -48,7 +48,7 @@ function imageUpload(req, res, next) {
             uploadToCloudinary(img.path)
           );
           const results = await Promise.all(uploadPromises);
-          req.body.images = results.map((res) => res.secure_url);
+          req.body.images = results.map((res) => ({url: res.secure_url, public_id: res.public_id}));
 
           if (results) {
             const deletePromises = images.map((img) => unlinkFile(img.path));
