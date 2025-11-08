@@ -26,7 +26,6 @@ function uploader(
         .toLowerCase()
         .split(" ")
         .join("-");
-      Date.now();
       cb(null, fileName + fileExt);
     },
   });
