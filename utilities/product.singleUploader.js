@@ -10,6 +10,9 @@ function uploader(
   // file upload folders
   const UPLOAD_FOLDER = `${__dirname}/../public/uploads/${subfolder_path}`;
 
+    // ✅ Ensure directory exists
+  fs.mkdirSync(UPLOAD_FOLDER, { recursive: true });
+  
   // difine storage
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
