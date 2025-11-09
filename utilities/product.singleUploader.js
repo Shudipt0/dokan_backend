@@ -11,7 +11,7 @@ function uploader(
   // file upload folders
   const UPLOAD_FOLDER = `${__dirname}/../public/uploads/${subfolder_path}`;
 
-    // ✅ Ensure directory exists
+  // ✅ Ensure directory exists
   fs.mkdirSync(UPLOAD_FOLDER, { recursive: true });
 
   // difine storage
@@ -30,17 +30,24 @@ function uploader(
     },
   });
 
+  const fileFilter = (req, file, cb) => {
+    // If no file is provided (field empty), just continue
+    if (!file) {
+      return cb(null, true);
+    }
+    // If file exists, validate MIME type
+    if (allowed_file_types.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error(error_msg));
+    }
+  };
+
   // prepare the final multer upload
   const upload = multer({
     storage: storage,
     limits: { fileSize: max_file_size },
-    fileFilter: (req, file, cb) => {
-      if (allowed_file_types.includes(file.mimetype)) {
-        cb(null, true);
-      } else {
-        cb(new Error(error_msg));
-      }
-    },
+    fileFilter: fileFilter,
   });
 
   return upload;
