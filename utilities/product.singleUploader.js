@@ -32,7 +32,7 @@ function uploader(
 
   const fileFilter = (req, file, cb) => {
     // If no file is provided (field empty), just continue
-    if (!file) {
+    if (!file || !file.mimetype) {
       return cb(null, true);
     }
     // If file exists, validate MIME type
