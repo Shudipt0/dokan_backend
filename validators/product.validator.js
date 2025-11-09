@@ -18,8 +18,8 @@ const metaSchema = Joi.object({
 });
 
 const imageSchema = Joi.object({
-    url: Joi.string().uri(),
-    public_id: Joi.string(),
+    url: Joi.string().uri().allow("", null),
+    public_id: Joi.string().allow("", null),
 })
 
 // product schema
