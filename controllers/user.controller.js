@@ -110,8 +110,9 @@ async function userProfile(req, res, next) {
 
 // update user
 async function updateUser(req, res, next) {
-  const { id } = req.params;
+  // const { id } = req.params;
   const updates = req.body;
+  const {id} = req.body;
   try {
     await User.findByIdAndUpdate(id, { $set: updates }, { new: true });
     res.status(200).json({ message: "User updated successfully!" });

@@ -13,6 +13,7 @@ const userSchema = mongoose.Schema(
       unique: true,
       trim: true,
       lowercase: true,
+      sparse: true,
     },
     phone: {
       type: String,
@@ -41,8 +42,13 @@ const userSchema = mongoose.Schema(
 
 // check if email is taken
 userSchema.statics.isEmailOrPhoneTaken = async function ({email, phone}) {
+    const conditions = [];
+  if (email) conditions.push({ email });
+  if (phone) conditions.push({ phone });
+  if (conditions.length === 0) return false;
+  
   const user = await this.findOne({ 
-    $or: [{email},{phone}]
+    $or: conditions
    });
   return !!user;
 };
