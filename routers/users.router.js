@@ -18,7 +18,7 @@ router.get("/", checkAuthentication, checkAuthorization, getAllUsers);
 router.get("/profile/:id", checkAuthentication,  userProfile);
 
 // update user
-router.put("/:id", checkAuthentication, updateUser)
+router.put("/:id", updateUser);
 
 
 
