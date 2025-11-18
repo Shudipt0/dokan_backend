@@ -26,6 +26,20 @@ async function getOrders(req, res, next) {
   }
 }
 
+
+// get single order
+async function getSingleOrder(req, res, next) {
+  const {id} = req.params;
+  try{
+    const order = await Order.findById(id);
+    res.status(200).json({
+        order: order,
+    })
+  }catch(error){
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+}
+
 // update orders
 async function updateOrders(req, res, next) {
     const {id} = req.params;
@@ -49,4 +63,4 @@ async function deleteOrders(req, res, next) {
   }
 }
 
-module.exports = {createOrders, getOrders,updateOrders,deleteOrders}
+module.exports = {createOrders, getOrders, getSingleOrder, updateOrders, deleteOrders}
