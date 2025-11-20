@@ -24,4 +24,17 @@ async function getAllContact(req, res) {
   }
 }
 
-module.exports = { createContact, getAllContact };
+async function getContactInfo(req, res) {
+  const {id} = req.params;
+  try {
+    const contact = await Contact.findById(id);
+    res.status(200).json({
+      status: "ok",
+      contact: contact,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+}
+
+module.exports = { createContact, getAllContact, getContactInfo };
