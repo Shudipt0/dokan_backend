@@ -1,5 +1,5 @@
 const express = require("express");
-const { createUser, loginUser, userProfile, getAllUsers, updateUser } = require("../controllers/user.controller");
+const { createUser, loginUser, userProfile, getAllUsers, updateUser, updateProfile } = require("../controllers/user.controller");
 const { checkAuthentication, checkAuthorization } = require("../middlewares/user/check.auth");
 const validateUser = require("../middlewares/user/user.validate");
 
@@ -19,6 +19,9 @@ router.get("/profile/:id", checkAuthentication,  userProfile);
 
 // update user
 router.put("/:id", checkAuthentication, checkAuthorization, updateUser);
+
+// update  profile
+router.put("/profile/:id", checkAuthentication, updateProfile);
 
 
 
