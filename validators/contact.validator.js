@@ -6,7 +6,7 @@ const contactSchema = Joi.object({
     "string.min": "Name must be at least 3 character long.",
     "string.max": "Name cannot be longer than 10 characters.",
   }),
-  email: Joi.string().trim(),
+  email: Joi.string().trim().optional().allow("", null),
   phone: Joi.string().required().trim().min(10).max(12).messages({
     "string.empty": "Phone is required!",
     "string.min": "Phone must be at least 11 character long.",
