@@ -26,7 +26,7 @@ const orderSchema = Joi.object({
   email: Joi.string().required().trim().messages({
     "string.empty": "Email is required!",
   }),
-  ordered_product: Joi.string().required().messages({
+  ordered_product: Joi.array().items(Joi.string()).required().messages({
     "string.empty": "ordered_product is required!",
   }),
   coupon: Joi.string().trim().optional().allow("", null),
