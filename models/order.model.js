@@ -35,11 +35,11 @@ const orderSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
-    ordered_product: {
+    ordered_product: [{
       type: String,
       required: true,
       trim: true,
-    },
+    }],
     coupon: {
       type: String,
       trim: true,
