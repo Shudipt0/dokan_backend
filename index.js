@@ -26,6 +26,11 @@ app.use(
 )
 const port = process.env.PORT;
 
+// Health check endpoint (add this!)
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
 
 // connect to mongoose
 mongoose.connect(process.env.DATABASE_URL)
