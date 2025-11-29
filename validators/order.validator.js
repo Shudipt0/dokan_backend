@@ -1,5 +1,12 @@
 const Joi = require("joi");
 
+const orderedProductSchema = Joi.object({
+  product_id: Joi.string().required(),
+  title: Joi.string().required(),
+  quantity: Joi.number().required(),
+  price: Joi.number().required(),
+})
+
 const orderSchema = Joi.object({
   name: Joi.string().required().trim().min(3).max(10).messages({
     "string.empty": "Name is required!",
@@ -26,7 +33,7 @@ const orderSchema = Joi.object({
   email: Joi.string().required().trim().messages({
     "string.empty": "Email is required!",
   }),
-  ordered_product: Joi.array().items(Joi.string()).required().messages({
+  ordered_product: Joi.array().items(orderedProductSchema).required().messages({
     "string.empty": "ordered_product is required!",
   }),
   coupon: Joi.string().trim().optional().allow("", null),
