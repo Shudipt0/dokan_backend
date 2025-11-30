@@ -29,6 +29,7 @@ const productSchema = Joi.object(
     description: Joi.string().required(),
     category: Joi.string().required(),
     price: Joi.number().required(),
+    discount_price: Joi.number().optional().allow("", null),
     rating: Joi.number().optional().allow("", null),
     stock: Joi.number().optional().allow("", null),
     tags: Joi.array().items(Joi.string().allow("", null)).optional().allow("", null),

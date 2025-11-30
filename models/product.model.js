@@ -36,6 +36,9 @@ const productSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    discount_price: {
+      type: Number,
+    },
     rating: {
       type: Number,
     },
