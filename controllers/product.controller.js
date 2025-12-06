@@ -115,11 +115,18 @@ async function postReviews(req, res, next) {
     if(!product){
       return res.status(404).json({ message: "Product not found" });
     };
-
+    
+    // single review
     const newReview = {
       rating, comment, reviewerName, reviewerEmail, date: new Date(),
     }
     product.reviews.push(newReview);
+
+    // creating total rating
+    const totalRating = product.reviews.reduce((total, value) => total + value.rating, 0);
+    const averageRating = totalRating / product.reviews.length;
+
+    product.rating = averageRating;
     await product.save();
     res.status(200).json({ message: "Review added successfully!" });
 
