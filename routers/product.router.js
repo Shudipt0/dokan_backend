@@ -14,6 +14,7 @@ const {
 const imageUpload = require("../middlewares/products/product.imageUpload");
 const validateProduct = require("../middlewares/products/product.validate");
 const uploader = require("../utilities/product.singleUploader");
+const { checkAuthentication } = require("../middlewares/user/check.auth");
 
 
 const router = express.Router();
@@ -40,7 +41,7 @@ router.get("/category/:slug", getProductsByCategory);
 router.get("/:id", getSingleProductById);
 
 // post reviews
-router.post("/:id/reviews", uploader().none(), postReviews);
+router.post("/:id/reviews", uploader().none(), checkAuthentication, postReviews);
 
 // update single product by id
 router.put("/:id", imageUpload, updateProduct);
