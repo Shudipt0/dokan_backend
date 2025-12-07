@@ -20,7 +20,7 @@ app.use(cookieParser());
 // cors
 app.use(
     cors({
-        origin: "https://e-commerce-dokan.vercel.app/",
+        origin: "https://e-commerce-dokan.vercel.app",
         credentials: true,
     })
 )
